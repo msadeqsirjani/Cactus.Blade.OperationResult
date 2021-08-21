@@ -2,6 +2,34 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Cactus.Blade.OperationResult</PackageId>
+    <AssemblyName>OperationResult</AssemblyName>
+    <RootNamespace>OperationResult</RootNamespace>
+    <Authors>Mohammad Sadeq Sirjani</Authors>
+    <Company>Cactus Blade</Company>
+    <Product>Cactus.Blade.OperationResult</Product>
+    <Description>A simple C# class library to handling returned result.</Description>
+    <Copyright>© Copyright 2021</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/msadeqsirjani/Cactus.Blade.OperationResult</PackageProjectUrl>
+    <PackageIcon>cactus-64.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/msadeqsirjani/Cactus.Blade.OperationResult</RepositoryUrl>
+    <PackageTags>c# Result Exception OperationResult</PackageTags>
+    <NeutralLanguage>C#</NeutralLanguage>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\images\cactus-64.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
