@@ -6,23 +6,36 @@ namespace OperationResult
     public readonly struct Result<T>
     {
         public T Value { get; }
-
+        public ActionResult ActionResult { get; }
+        public string Message { get; }
         public Exception Exception { get; }
-
         public bool IsSuccess { get; }
 
         public Result(T value)
         {
             Value = value;
+            IsSuccess = value is not System.Exception;
             Exception = null;
-            IsSuccess = true;
+            Message = string.Empty;
+            ActionResult = ActionResult.Success;
+        }
+
+        public Result(string message)
+        {
+            Value = default;
+            IsSuccess = false;
+            Exception = null;
+            Message = message;
+            ActionResult = ActionResult.Message;
         }
 
         public Result(Exception exception)
         {
             Value = default;
-            Exception = exception ?? throw new ArgumentNullException(nameof(exception));
             IsSuccess = false;
+            Exception = exception ?? throw new ArgumentNullException(nameof(exception));
+            Message = exception.Message;
+            ActionResult = ActionResult.Exception;
         }
 
         public static implicit operator Result<T>(T value) => new(value);
@@ -36,14 +49,14 @@ namespace OperationResult
 
         public Result ChangeInNoResult() =>
             IsSuccess
-                ? new Result(true)
+                ? new Result(ActionResult.Success)
                 : new Result(Exception);
 
-        public void Deconstruct(out bool isSuccess, out T value)
-            => (isSuccess, value) = (IsSuccess, Value);
+        public void Deconstruct(out ActionResult actionResult, out T value)
+            => (actionResult, value) = (ActionResult, Value);
 
-        public void Deconstruct(out bool isSuccess, out T value, out Exception exception)
-            => (isSuccess, value, exception) = (IsSuccess, Value, Exception);
+        public void Deconstruct(out ActionResult actionResult, out T value, out Exception exception)
+            => (actionResult, value, exception) = (ActionResult, Value, Exception);
 
         public static implicit operator bool(Result<T> result)
             => result.IsSuccess;
@@ -57,24 +70,37 @@ namespace OperationResult
     public readonly struct Result
     {
         public Exception Exception { get; }
-
+        public ActionResult ActionResult { get; }
+        public string Message { get; }
         public bool IsSuccess { get; }
 
-        public Result(bool isSuccess)
+        public Result(ActionResult actionResult)
         {
             Exception = null;
-            IsSuccess = isSuccess;
+            IsSuccess = actionResult != ActionResult.Message;
+            Message = string.Empty;
+            ActionResult = actionResult;
+        }
+
+        public Result(string message)
+        {
+            Exception = null;
+            IsSuccess = false;
+            Message = message;
+            ActionResult = ActionResult.Message;
         }
 
         public Result(Exception exception)
         {
             Exception = exception ?? throw new ArgumentNullException(nameof(exception));
             IsSuccess = false;
+            Message = exception.Message;
+            ActionResult = ActionResult.Exception;
         }
 
         public bool ErrorIs<TException>() where TException : Exception => Exception is TException;
 
-        public static Result Success() => new(true);
+        public static Result Success() => new(ActionResult.Success);
 
         public static Result<T> Success<T>(T value) => new(value);
 
@@ -88,9 +114,19 @@ namespace OperationResult
 
         public static implicit operator Task<Result>(Result result) => result.AsTask;
 
-        public void Deconstruct(out bool isSuccess, out Exception exception) =>
-            (isSuccess, exception) = (IsSuccess, Exception);
+        public void Deconstruct(out ActionResult actionResult, out Exception exception) =>
+            (actionResult, exception) = (ActionResult, Exception);
+
+        public void Deconstruct(out ActionResult actionResult, out string message, out Exception exception) =>
+            (actionResult, message, exception) = (ActionResult, Message, Exception);
 
         public Task<Result> AsTask => Task.FromResult(this);
+    }
+
+    public enum ActionResult
+    {
+        Success,
+        Message,
+        Exception
     }
 }
