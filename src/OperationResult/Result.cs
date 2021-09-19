@@ -40,6 +40,8 @@ namespace OperationResult
 
         public static implicit operator Result<T>(T value) => new(value);
 
+        public static implicit operator Result<T>(string value) => new(value);
+
         public static implicit operator Result<T>(Exception exception) => new(exception);
 
         public Result<TEnd> ChangeInAnotherResult<TEnd>(Func<T, TEnd> converter)
@@ -101,6 +103,8 @@ namespace OperationResult
         public bool ErrorIs<TException>() where TException : Exception => Exception is TException;
 
         public static Result Success() => new(ActionResult.Success);
+
+        public static Result Success(string message) => new(message);
 
         public static Result<T> Success<T>(T value) => new(value);
 
