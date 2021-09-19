@@ -19,6 +19,7 @@
     <RepositoryUrl>https://github.com/msadeqsirjani/Cactus.Blade.OperationResult</RepositoryUrl>
     <PackageTags>c# Result Exception OperationResult</PackageTags>
     <NeutralLanguage>C#</NeutralLanguage>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
