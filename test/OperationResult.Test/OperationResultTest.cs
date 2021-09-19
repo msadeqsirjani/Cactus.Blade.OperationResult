@@ -110,16 +110,16 @@ namespace OperationResult.Test
 
             var result = Result.Success(value);
 
-            var (isSuccess, entity, exception) = result;
+            var (actionResult, entity, exception) = result;
 
-            isSuccess.Should().BeTrue();
+            actionResult.Should().Be(ActionResult.Success);
             entity.Should().NotBeNull();
             entity.Should().BeOfType<TemplateClass>();
             exception.Should().BeNull();
 
-            (isSuccess, entity) = result;
+            (actionResult, entity) = result;
 
-            isSuccess.Should().BeTrue();
+            actionResult.Should().Be(ActionResult.Success);
             entity.Should().NotBeNull();
             entity.Should().BeOfType<TemplateClass>();
         }
